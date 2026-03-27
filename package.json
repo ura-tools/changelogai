@@ -1,0 +1,25 @@
+{
+  "name": "changelogai",
+  "version": "1.0.0",
+  "description": "AI-powered changelog generator from git history",
+  "main": "index.js",
+  "bin": {
+    "changelogai": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "changelog",
+    "git",
+    "ai",
+    "release-notes",
+    "conventional-commits",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
