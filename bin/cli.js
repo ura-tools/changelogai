@@ -5,7 +5,7 @@ const { parseArgs } = require("node:util");
 const { resolve } = require("node:path");
 const { readFileSync, writeFileSync, existsSync } = require("node:fs");
 const { generateChangelog } = require("../lib/generator");
-const { getGitLog, getLatestTag, getTags } = require("../lib/git");
+const { getGitLog, getLatestTag, getRemoteUrl } = require("../lib/git");
 
 const HELP = `
 changelogai — AI-powered changelog from git history
@@ -102,9 +102,18 @@ async function run(opts, repoPath) {
 
   if (!fromRef) {
     console.error(
-      "No tags found. Use --from <commit> to specify a start point."
+      "Error: Not a git repository or no commits found.\n" +
+        "Run this inside a git repo with at least one commit."
     );
     process.exit(1);
+  }
+
+  // If no tags exist and we fell back to first commit, inform the user
+  if (!opts.from && !/^v?\d/.test(fromRef)) {
+    console.error(
+      `Note: No tags found — showing all ${maxCommits > 0 ? "up to " + maxCommits + " " : ""}commits since start of repo.\n` +
+        "      Use --from <ref> to narrow the range, or create a tag with: git tag v0.1.0\n"
+    );
   }
 
   const commits = getGitLog(repoPath, fromRef, toRef, maxCommits);
@@ -114,12 +123,15 @@ async function run(opts, repoPath) {
     return;
   }
 
+  const repoUrl = getRemoteUrl(repoPath);
+
   const result = await generateChangelog(commits, {
     format: opts.format,
     group: opts.group,
     ai: opts.ai,
     model: opts.model,
     versionBump: opts["version-bump"],
+    repoUrl,
     fromRef,
     toRef,
   });
@@ -128,7 +140,14 @@ async function run(opts, repoPath) {
     const outPath = resolve(opts.output);
     if (opts.prepend && existsSync(outPath)) {
       const existing = readFileSync(outPath, "utf8");
-      writeFileSync(outPath, result + "\n\n" + existing);
+      // Insert after header block (# Changelog + optional description) if present
+      const headerMatch = existing.match(/^(# [^\r\n]+[\r\n]+(?:[\r\n]*(?!## )[^\r\n]+[\r\n]+)*)/);
+      if (headerMatch) {
+        const after = existing.slice(headerMatch[0].length);
+        writeFileSync(outPath, headerMatch[0] + result + "\n\n" + after);
+      } else {
+        writeFileSync(outPath, result + "\n\n" + existing);
+      }
     } else {
       writeFileSync(outPath, result);
     }

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.ura-tools/changelogai",
+  "title": "changelogai",
+  "description": "Generate changelogs and suggest semver bumps from git history",
+  "version": "1.1.1",
+  "websiteUrl": "https://github.com/ura-tools/changelogai",
+  "repository": {
+    "url": "https://github.com/ura-tools/changelogai",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@ura-tools/changelogai",
+      "transport": {
+        "type": "stdio"
+      },
+      "runtimeHint": "node",
+      "packageArguments": [
+        {
+          "type": "positional",
+          "valueHint": "changelogai-mcp"
+        }
+      ]
+    }
+  ]
+}
