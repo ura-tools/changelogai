@@ -22,7 +22,7 @@ So I built **changelogai** — a CLI that generates professional changelogs from
 ## Quick start
 
 ```bash
-npm install -g https://files.catbox.moe/n5rjzo.tgz
+npm install -g @ura-dev/changelogai
 
 # Grouped changelog since last tag
 changelogai --group
@@ -82,4 +82,4 @@ Any MCP client (Claude Code, Cursor, Dapr Agents) can now generate changelogs au
 - Prepend mode for existing CHANGELOG.md files
 - MIT license
 
-Built by [ura](https://files.catbox.moe/tgvqxd.html) — developer tools that go deeper.
+Built by [ura](https://github.com/ura-tools/changelogai) — developer tools that go deeper.
