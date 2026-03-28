@@ -1,6 +1,6 @@
 {
   "name": "@ura-dev/changelogai",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "description": "AI-powered changelog generator from git history",
   "main": "index.js",
   "bin": {

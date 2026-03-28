@@ -11,6 +11,8 @@ test.js
 .github-auth.json
 .telegraph-auth.json
 .writeas-auth.json
+.mcpregistry_*
+.npmrc
 scripts/
 site/
 node_modules/
